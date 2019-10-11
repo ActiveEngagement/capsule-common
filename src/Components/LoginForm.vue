@@ -15,7 +15,6 @@ import { authenticate } from '../Auth';
 import Sizeable from 'vue-interface/src/Mixins/Sizeable';
 import InputField from 'vue-interface/src/Components/InputField';
 import BtnActivity from 'vue-interface/src/Components/BtnActivity';
-import { purge } from '../../../capsule-storage/src/Storage';
 
 export default {
 
