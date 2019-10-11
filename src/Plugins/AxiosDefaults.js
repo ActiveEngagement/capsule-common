@@ -1,6 +1,7 @@
-import Axios from 'axios';
 import { merge, isObject } from 'lodash';
 import Request from 'vue-interface/src/Http/Request';
+
+let Axios;
 
 export function defaults(...args) {
     if(args.length) {
@@ -45,8 +46,6 @@ export default async function(vue, options = {}) {
         throw new Error('AxiosDefaults plugin requires options.id to be set.');
     }
 
-    vue.$axios = Axios;
-
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
         'http://api.thecapsule.email/v1';
@@ -61,7 +60,7 @@ export default async function(vue, options = {}) {
         throw error;
     });
 
-    Object.assign(Axios.defaults.headers, {
+    headers({
         'Accept': 'application/json',
         'Capsule-Client-Id': options.id,
         'Capsule-Client-Version': VERSION,

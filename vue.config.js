@@ -1,11 +1,7 @@
-var ManifestPlugin = require('webpack-manifest-plugin');
-
 // vue.config.js
 module.exports = {
-    configureWebpack: {
-        plugins:[
-            // new ManifestPlugin()
-        ],
+    externals: {
+        'axios': 'Axios',
     },
     pages: {
         index: {
@@ -20,4 +16,4 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production' ? 'http://thecapsule.email/dist' : '/',
     assetsDir: './src/assets',
     outputDir: './dist'
-}
+};
