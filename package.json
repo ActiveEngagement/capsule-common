@@ -1,0 +1,44 @@
+{
+  "name": "capsule-common",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "scripts": {
+    "commit": "git add -A && git commit -m 'Pre-release commit';",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name CapsuleCommon ./src/index.js",
+    "build-dev-lib": "NODE_ENV=development vue-cli-service build --target lib --name CapsuleCommon ./src/index.js",
+    "lint": "vue-cli-service lint",
+    "release-patch": "npm run build && npm run commit && npm version patch; npm run release;",
+    "release-minor": "npm run build && npm run commit && npm version minor; npm run release;",
+    "release-major": "npm run build && npm run commit && npm version major; npm run release;",
+    "release": "npm run commit; npm publish; git push --follow-tags;"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "lodash": "^4.17.15",
+    "moment-timezone": "^0.5.26",
+    "vue-interface": "^0.4.35",
+    "vuex-persistent-plugin": "^0.4.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.12.0",
+    "@vue/cli-plugin-eslint": "^3.12.0",
+    "@vue/cli-service": "^3.12.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^5.2.3",
+    "html-beautify-webpack-plugin": "^1.0.5",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10",
+    "webpack-manifest-plugin": "^2.2.0"
+  }
+}

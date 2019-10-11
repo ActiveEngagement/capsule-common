@@ -1,0 +1,72 @@
+<template>
+    <form class="login-form" @submit.prevent="onSubmit">
+        <slot name="header" />
+        <input-field id="email" v-model="form.email" type="email" :errors="errors" :size="size" name="email" label="Email" placeholder="Email" custom />
+        <input-field id="password" v-model="form.password" :errors="errors" type="password" :size="size" name="password" label="Password" placeholder="Password" custom />
+        <btn-activity :activity="activity" :size="size" block>
+            Login
+        </btn-activity>
+        <slot />
+    </form>
+</template>
+
+<script>
+import { authenticate } from '../Auth';
+import Sizeable from 'vue-interface/src/Mixins/Sizeable';
+import InputField from 'vue-interface/src/Components/InputField';
+import BtnActivity from 'vue-interface/src/Components/BtnActivity';
+import { purge } from '../../../capsule-storage/src/Storage';
+
+export default {
+
+    name: 'LoginForm',
+
+    components: {
+        InputField,
+        BtnActivity,
+    },
+
+    mixins: [
+        Sizeable
+    ],
+
+    props: {
+
+        size: {
+            type: String,
+            default: 'lg'
+        },
+
+        redirect: [Object, String]
+
+    },
+
+    data() {
+        return {
+            form: {},
+            errors: {},
+            activity: false
+        };
+    },
+
+    methods: {
+
+        onSubmit(e) {
+            this.activity = true;
+
+            authenticate(this.form)
+                .then(user => {
+                    this.$emit('authenticate', user);
+                    this.redirect && this.$router.push(this.redirect);
+                }, error => {
+                    this.errors = error.response.data.errors;
+                    this.$emit('error', this.errors);
+                })
+                .finally(() => {
+                    this.activity = false;
+                });
+        }
+
+    }
+};
+</script>
