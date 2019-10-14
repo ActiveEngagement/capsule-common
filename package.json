@@ -18,7 +18,7 @@
     "deep-extend": "^0.6.0",
     "moment-timezone": "^0.5.26",
     "vue-interface": "^0.4.35",
-    "vuex-persistent-plugin": "file:../vuex-persistent-plugin"
+    "vuex-persistent-plugin": "^0.4.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",
