@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
 
-export default function isExpired(a, b, timezone = 'America/New_York') {
-    return moment(a).isBefore(moment.tz(b, timezone));
+export default function isExpired(subject, expiration, timezone = 'America/New_York') {
+    return moment(subject).isBefore(moment.tz(expiration, timezone));
 }

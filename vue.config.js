@@ -1,8 +1,5 @@
 // vue.config.js
 module.exports = {
-    externals: {
-        'axios': 'Axios',
-    },
     pages: {
         index: {
             // entry for the page

@@ -1,7 +1,13 @@
 import Axios from 'axios';
 import { isExpired } from './Functions';
 import { authorize } from './Plugins/AxiosDefaults';
-import { purge, cache, get} from 'vuex-persistent-plugin';
+import { purge, cache, get, config } from 'vuex-persistent-plugin';
+
+function merge(data, ...args) {
+    return Object.assign(data, {
+        is: (...roles) => is(data, roles)
+    }, ...args);
+}
 
 export function is(user, ...roles) {
     return roles.filter(subject => {
@@ -15,8 +21,8 @@ export function is(user, ...roles) {
     }).length > 0;
 }
 
-export async function preflight(length = 60) {
-    return cache('preflight', () => {
+export function preflight(length = 60) {
+    return cache('user.preflight', () => {
         return Axios.options('auth/user').then(({ data }) => data);
     }, length);
 }
@@ -44,37 +50,37 @@ export async function authenticate(email, password) {
 }
 
 export async function logout() {
+    const user = await config('user');
+
     authorize(null);
 
     await purge('user');
+
+    return user;
 }
 
 export async function user() {
-    let doc = await get('user');
+    const doc = await get('user').catch(e => undefined);
 
-    doc && authorize(doc.data);
-
-    if(!doc) {
-        return await cache('user', async () => {
-            const { data } = Axios.get('auth/user');
-            
-            return data && Object.assign(authorize(data), {
-                is: (...roles) => is(data, ...roles)
-            });
-        });
-    }
-    else {
+    if(doc) {
         const { $cachedAt, data } = doc;
+
+        authorize(data);
+
         const { client, updated_at } = await preflight();
 
         if(isExpired($cachedAt, updated_at)) {
-            await purge('user');
-
             return await user();
         }
-        
-        return Object.assign(data, {
-            client, is: (...roles) => is(data, roles)
+
+        return merge(data, {
+            client
         });
     }
+
+    return await cache('user', async() => {
+        const { data } = await Axios.get('auth/user');
+
+        return merge(authorize(data));
+    });
 }

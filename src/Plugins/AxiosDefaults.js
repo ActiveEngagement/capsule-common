@@ -1,11 +1,11 @@
-import { merge, isObject } from 'lodash';
-import Request from 'vue-interface/src/Http/Request';
+let Axios = require('axios');
 
-let Axios;
+import deepExtend from 'deep-extend';
+import Request from 'vue-interface/src/Http/Request';
 
 export function defaults(...args) {
     if(args.length) {
-        Request.defaults = merge(Axios.defaults, Object.assign(...args));
+        Request.defaults = deepExtend(Axios.defaults, ...args);
     }
 
     return Axios.defaults;
@@ -32,7 +32,7 @@ export function header(key, value) {
 }
 
 export function authorize(key) {
-    if(isObject(key)) {
+    if(typeof key === 'object') {
         authorize(key.secret_key);
         
         return key;
@@ -42,6 +42,8 @@ export function authorize(key) {
 }
 
 export default async function(vue, options = {}) {
+    vue.$http = Axios;
+    
     if(!options.id) {
         throw new Error('AxiosDefaults plugin requires options.id to be set.');
     }
@@ -49,8 +51,6 @@ export default async function(vue, options = {}) {
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
         'http://api.thecapsule.email/v1';
-
-    console.log('AxiosDefaults', Axios.defaults.baseURL);
 
     Axios.interceptors.response.use(response => response, error => {
         if(typeof options.error === 'function') {
@@ -63,7 +63,9 @@ export default async function(vue, options = {}) {
     headers({
         'Accept': 'application/json',
         'Capsule-Client-Id': options.id,
-        'Capsule-Client-Version': VERSION,
-        'Capsule-Client-Platform': 'chrome',
+        'Capsule-Client-Version': options.version,
+        'Capsule-Client-Platform': options.platform || 'chrome',
     });
+
+    console.log(Axios.defaults.baseURL);
 }
