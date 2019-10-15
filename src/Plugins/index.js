@@ -4,4 +4,4 @@ import AxiosDefaults from './AxiosDefaults';
 export {
     Authorization,
     AxiosDefaults
-}
+};
