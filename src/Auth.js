@@ -4,14 +4,14 @@ import { authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
 export function merge(data, ...args) {
-    return Object.assign((data || {teams: []}), {
+    return Object.assign(data, {
         is: (...roles) => is(data, roles)
     }, ...args);
 }
 
 export function is(user, ...roles) {
     return roles.filter(subject => {
-        return !!user.teams.find(team => {
+        return user && user.teams && !!user.teams.find(team => {
             return team.roles && team.roles.find(role => {
                 return subject === role.slug ||
                     subject === role.name ||
