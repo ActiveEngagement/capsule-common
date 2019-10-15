@@ -4,7 +4,7 @@ import { authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
 export function merge(data, ...args) {
-    return Object.assign(data, {
+    return Object.assign((data || {}), {
         is: (...roles) => is(data, roles)
     }, ...args);
 }
