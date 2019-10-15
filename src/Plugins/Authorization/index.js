@@ -1,6 +1,5 @@
 import Factory from './Factory';
-import { promise } from '../../Functions';
-import { commentNode } from 'capsule-common';
+import { promise, commentNode } from '../../Functions';
 
 function extract(binding) {
     let verb = binding.arg, subject = binding.value;
