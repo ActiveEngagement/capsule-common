@@ -13,11 +13,14 @@
     "release-major": "npm run build && npm run commit && npm version major; npm run release;",
     "release": "npm run commit; npm publish; git push --follow-tags;"
   },
+  "peerDependencies": {
+    "vue-interface": "^0.4.35"
+  },
   "dependencies": {
     "axios": "^0.19.0",
     "deep-extend": "^0.6.0",
+    "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "vue-interface": "^0.4.35",
     "vuex-persistent-plugin": "^0.4.3"
   },
   "devDependencies": {

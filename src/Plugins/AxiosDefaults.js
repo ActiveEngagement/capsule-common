@@ -66,6 +66,4 @@ export default async function(vue, options = {}) {
         'Capsule-Client-Version': options.version,
         'Capsule-Client-Platform': options.platform || 'chrome',
     });
-
-    console.log(Axios.defaults.baseURL);
 }

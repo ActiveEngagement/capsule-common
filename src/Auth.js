@@ -3,7 +3,7 @@ import { isExpired } from './Functions';
 import { authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
-function merge(data, ...args) {
+export function merge(data, ...args) {
     return Object.assign(data, {
         is: (...roles) => is(data, roles)
     }, ...args);
