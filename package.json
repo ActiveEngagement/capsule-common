@@ -17,9 +17,9 @@
     "axios": "^0.19.0",
     "deep-extend": "^0.6.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.26",
-    "vue-interface": "^0.4.35",
-    "vuex-persistent-plugin": "^0.4.3"
+    "moment-timezone": "^0.5.27",
+    "vue-interface": "^0.4.36",
+    "vuex-persistent-plugin": "^0.4.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",
