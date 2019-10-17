@@ -25,8 +25,10 @@ export default function install(Vue, user, fn, options = {}) {
         return factory.can(user, verb, subject, ...args);
     };
 
-    Vue.directive('can', (el, binding, vnode) => {
-        promise(user).then(user => {
+    promise(user).then(data => {
+        user = data;
+
+        Vue.directive('can', (el, binding, vnode) => {
             const { verb, subject } = extract(binding);
 
             if(!factory.can(user, verb, subject)) {
