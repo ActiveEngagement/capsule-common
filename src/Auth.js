@@ -70,6 +70,8 @@ export async function user() {
         const { client, updated_at } = await preflight();
 
         if(isExpired($cachedAt, updated_at)) {
+            purge('user');
+            
             return await user();
         }
 

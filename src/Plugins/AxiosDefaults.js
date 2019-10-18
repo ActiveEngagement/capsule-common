@@ -54,7 +54,7 @@ export default async function(vue, options = {}) {
 
     Axios.interceptors.response.use(response => response, error => {
         if(typeof options.error === 'function') {
-            options.error(vue);
+            options.error(vue, error);
         }
 
         throw error;
