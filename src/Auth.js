@@ -9,7 +9,11 @@ export function merge(data, ...args) {
     }, ...args);
 }
 
-export function is(user, ...roles) {
+export function is(user, roles, ...args) {
+    if(!Array.isArray(roles)) {
+        roles = [roles];
+    }
+
     return roles.filter(subject => {
         return user && user.teams && !!user.teams.find(team => {
             return team.roles && team.roles.find(role => {
