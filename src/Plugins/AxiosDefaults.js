@@ -18,6 +18,10 @@ export function headers(...args) {
         });
     }
     
+    Object.keys(Axios.defaults.headers).forEach(key => {
+        Axios.defaults.headers[key] === undefined && delete obj[key]
+    });
+
     return Axios.defaults.headers;
 }
 
@@ -47,7 +51,7 @@ export default async function(vue, options = {}) {
     if(!options.id) {
         throw new Error('AxiosDefaults plugin requires options.id to be set.');
     }
-
+    
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
         'https://api.thecapsule.email/v1';
