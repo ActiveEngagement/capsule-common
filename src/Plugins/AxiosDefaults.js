@@ -19,7 +19,7 @@ export function headers(...args) {
     }
     
     Object.keys(Axios.defaults.headers).forEach(key => {
-        Axios.defaults.headers[key] === undefined && delete obj[key]
+        Axios.defaults.headers[key] === undefined && delete obj[key];
     });
 
     return Axios.defaults.headers;
