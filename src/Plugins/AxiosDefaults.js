@@ -32,7 +32,7 @@ export function header(key, value) {
 }
 
 export function authorize(key) {
-    if(typeof key === 'object') {
+    if(typeof key === 'object' && key.secret_key) {
         authorize(key.secret_key);
         
         return key;
@@ -50,7 +50,7 @@ export default async function(vue, options = {}) {
 
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
-        'http://api.thecapsule.email/v1';
+        'https://api.thecapsule.email/v1';
 
     Axios.interceptors.response.use(response => response, error => {
         if(typeof options.error === 'function') {
