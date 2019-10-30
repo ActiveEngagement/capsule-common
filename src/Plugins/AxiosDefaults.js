@@ -45,13 +45,15 @@ export function authorize(key) {
     return header('Authorization', key ? `Bearer ${key}` : null);
 }
 
-export default async function(vue, options = {}) {
-    vue.$http = Axios;
-    
+export default function(vue, options = {}) {
     if(!options.id) {
         throw new Error('AxiosDefaults plugin requires options.id to be set.');
     }
     
+    if(vue && typeof vue === 'object') {
+        vue.$http = Axios;
+    }
+        
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
         'https://api.thecapsule.email/v1';
