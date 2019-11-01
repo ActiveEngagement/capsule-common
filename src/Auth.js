@@ -79,7 +79,7 @@ export async function user() {
             return await user();
         }
 
-        return merge(data, {
+        return merge(data, client && {
             client
         });
     }
