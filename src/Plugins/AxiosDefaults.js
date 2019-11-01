@@ -36,7 +36,7 @@ export function header(key, value) {
 }
 
 export function authorize(key) {
-    if(typeof key === 'object' && key.secret_key) {
+    if(key && key.secret_key) {
         authorize(key.secret_key);
         
         return key;
