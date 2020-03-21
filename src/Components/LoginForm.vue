@@ -1,8 +1,26 @@
 <template>
     <form class="login-form" @submit.prevent="onSubmit">
         <slot name="header" />
-        <input-field id="email" v-model="form.email" type="email" :errors="errors" :size="size" name="email" label="Email" placeholder="Email" custom />
-        <input-field id="password" v-model="form.password" :errors="errors" type="password" :size="size" name="password" label="Password" placeholder="Password" custom />
+        <input-field
+            id="email"
+            v-model="form.email"
+            type="email"
+            :errors="errors"
+            :size="size"
+            name="email"
+            label="Email"
+            placeholder="Email"
+            custom />
+        <input-field
+            id="password"
+            v-model="form.password"
+            :errors="errors"
+            type="password"
+            :size="size"
+            name="password"
+            label="Password"
+            placeholder="Password"
+            custom />
         <btn-activity :activity="activity" :size="size" block>
             Login
         </btn-activity>

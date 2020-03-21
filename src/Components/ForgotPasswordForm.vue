@@ -1,6 +1,15 @@
 <template>
     <form @submit.prevent="onSubmit">
-        <input-field id="email" v-model="form.email" type="email" :errors="errors" :size="size" name="email" label="Email" placeholder="Email" custom />
+        <input-field
+            id="email"
+            v-model="form.email"
+            type="email"
+            :errors="errors"
+            :size="size"
+            name="email"
+            label="Email"
+            placeholder="Email"
+            custom />
         <btn-activity :activity="activity" :size="size" block>
             Send Reset Email
         </btn-activity>
