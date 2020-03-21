@@ -19,7 +19,9 @@ export function headers(...args) {
     }
     
     Object.keys(Axios.defaults.headers).forEach(key => {
-        Axios.defaults.headers[key] === undefined && delete obj[key];
+        if(Axios.defaults.headers[key] === undefined) {
+            delete Axios.defaults.headers[key];
+        }
     });
 
     return Axios.defaults.headers;
@@ -53,7 +55,7 @@ export default function(vue, options = {}) {
     if(vue && typeof vue === 'object') {
         vue.$http = Axios;
     }
-        
+
     Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
         'http://api.thecapsule.test/v1' :
         'https://api.thecapsule.email/v1';
