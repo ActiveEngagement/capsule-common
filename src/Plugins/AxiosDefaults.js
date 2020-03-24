@@ -56,9 +56,11 @@ export default function(vue, options = {}) {
         vue.$http = Axios;
     }
 
-    Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ?
-        'http://api.thecapsule.test/v1' :
-        'https://api.thecapsule.email/v1';
+    Axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+
+    if(!Axios.defaults.baseURL) {
+        throw new Error('process.env.VUE_APP_BASE_URL is not defined.');
+    }
 
     Axios.interceptors.response.use(response => response, error => {
         if(typeof options.error === 'function') {
