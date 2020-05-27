@@ -38,10 +38,8 @@ export function header(key, value) {
 }
 
 export function authorize(key) {
-    if(key && key.secret_key) {
-        authorize(key.secret_key);
-        
-        return key;
+    if(key && (key.secret_key || key.public_key)) {
+        return authorize(key.secret_key || key.public_key);
     }
 
     return header('Authorization', key ? `Bearer ${key}` : null);

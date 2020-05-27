@@ -3,6 +3,8 @@ import { isExpired } from './Functions';
 import { authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
+import { factory } from 'capsule-common/src/Plugins/Authorization';
+
 export function merge(data, ...args) {
     return Object.assign(data || {}, {
         is: (...roles) => is(data, roles)
@@ -50,7 +52,9 @@ export async function authenticate(email, password) {
     await purge('user');
     await cache('user', authorize(data));
 
-    return data;
+    factory.install(data);
+
+    return await user();
 }
 
 export async function logout() {
