@@ -67,8 +67,8 @@ export default {
     },
 
     methods: {
-
         onSubmit(e) {
+            this.$emit('submit', e);
             this.activity = true;
 
             authenticate(this.form)
@@ -76,7 +76,7 @@ export default {
                     this.$emit('authenticate', user);
                     this.redirect && this.$router.push(this.redirect);
                 }, error => {
-                    this.errors = error.response.data.errors;
+                    this.errors = error.response && error.response.data && error.response.data.errors;
                     this.$emit('error', this.errors);
                 })
                 .finally(() => {

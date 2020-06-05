@@ -3,7 +3,7 @@ import { isExpired } from './Functions';
 import { authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
-import { factory } from 'capsule-common/src/Plugins/Authorization';
+// import { factory } from 'capsule-common/src/Plugins/Authorization';
 
 export function merge(data, ...args) {
     return Object.assign(data || {}, {
@@ -49,12 +49,13 @@ export async function authenticate(email, password) {
         })
     );
 
-    await purge('user');
-    await cache('user', authorize(data));
+    await cache('user', data);
 
-    factory.install(data);
+    authorize(data);
 
-    return await user();
+    // factory.install(data);
+
+    return data;
 }
 
 export async function logout() {
