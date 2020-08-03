@@ -50,9 +50,7 @@ export default function(vue, options = {}) {
         throw new Error('AxiosDefaults plugin requires options.id to be set.');
     }
     
-    if(vue && typeof vue === 'object') {
-        vue.$http = Axios;
-    }
+    vue.prototype.$http = Axios;
 
     Axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
