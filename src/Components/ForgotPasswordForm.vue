@@ -10,7 +10,7 @@
             label="Email"
             placeholder="Email"
             custom />
-        <btn-activity :activity="activity" :size="size" block>
+        <btn-activity indicator="spinner" :activity="activity" :size="size" block>
             Send Reset Email
         </btn-activity>
         <slot />
@@ -19,9 +19,9 @@
 
 <script>
 import { forgotPassword } from '../Auth';
-import Sizeable from 'vue-interface/src/Mixins/Sizeable';
-import InputField from 'vue-interface/src/Components/InputField';
-import BtnActivity from 'vue-interface/src/Components/BtnActivity';
+import BtnActivity from '@vue-interface/btn-activity';
+import InputField from '@vue-interface/input-field';
+import Sizeable from '@vue-interface/sizeable';
 
 export default {
 

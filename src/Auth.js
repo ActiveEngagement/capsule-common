@@ -1,9 +1,6 @@
-import Axios from 'axios';
 import { isExpired } from './Functions';
-import { authorize } from './Plugins/AxiosDefaults';
+import { Axios, authorize } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
-
-// import { factory } from 'capsule-common/src/Plugins/Authorization';
 
 export function merge(data, ...args) {
     return Object.assign(data || {}, {
@@ -52,8 +49,6 @@ export async function authenticate(email, password) {
     await cache('user', data);
 
     authorize(data);
-
-    // factory.install(data);
 
     return data;
 }

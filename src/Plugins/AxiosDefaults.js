@@ -1,30 +1,11 @@
-let Axios = require('axios');
+let Axios;
 
-import deepExtend from 'deep-extend';
-import Request from 'vue-interface/src/Http/Request';
-
-export function defaults(...args) {
-    if(args.length) {
-        Request.defaults = deepExtend(Axios.defaults, ...args);
-    }
-
-    return Axios.defaults;
-}
+export {
+    Axios
+};
 
 export function headers(...args) {
-    if(args.length) {
-        defaults({
-            headers: Object.assign(...args)
-        });
-    }
-    
-    Object.keys(Axios.defaults.headers).forEach(key => {
-        if(Axios.defaults.headers[key] === undefined) {
-            delete Axios.defaults.headers[key];
-        }
-    });
-
-    return Axios.defaults.headers;
+    return Object.assign(Axios.defaults.headers, ...args);
 }
 
 export function header(key, value) {
@@ -47,11 +28,14 @@ export function authorize(key) {
 
 export default function(vue, options = {}) {
     if(!options.id) {
-        throw new Error('AxiosDefaults plugin requires options.id to be set.');
+        throw new Error('AxiosDefaults plugin requires options.id.');
     }
-    
-    vue.prototype.$http = Axios;
 
+    if(!options.Axios) {
+        throw new Error('AxiosDefaults plugin requires options.Axios.');
+    }
+
+    Axios = vue.prototype.$http = options.Axios;
     Axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     if(!Axios.defaults.baseURL) {

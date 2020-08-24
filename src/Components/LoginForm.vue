@@ -21,7 +21,7 @@
             label="Password"
             placeholder="Password"
             custom />
-        <btn-activity :activity="activity" :size="size" block>
+        <btn-activity indicator="spinner" :activity="activity" :size="size" block>
             Login
         </btn-activity>
         <slot />
@@ -30,9 +30,9 @@
 
 <script>
 import { authenticate } from '../Auth';
-import Sizeable from 'vue-interface/src/Mixins/Sizeable';
-import InputField from 'vue-interface/src/Components/InputField';
-import BtnActivity from 'vue-interface/src/Components/BtnActivity';
+import BtnActivity from '@vue-interface/btn-activity';
+import InputField from '@vue-interface/input-field';
+import Sizeable from '@vue-interface/sizeable';
 
 export default {
 
@@ -60,6 +60,7 @@ export default {
 
     data() {
         return {
+            test: 'test',
             form: {},
             errors: {},
             activity: false
