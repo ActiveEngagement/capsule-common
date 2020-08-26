@@ -1,4 +1,4 @@
-export default class Factory {
+export default class Guard {
 
     constructor() {
         this.$before = [];
@@ -70,14 +70,24 @@ export default class Factory {
         if(this.passesBeforeCheck(user, verb, subject, ...args)) {
             return true;
         }
-
-        const rule = this.rules.get(subject) || this.rules.get(verb);
-
-        if(typeof rule === 'object') {
-            return this.validate(user, rule[verb], ...args);
+        
+        if(!Array.isArray(subject)) {
+            subject = [subject];
         }
 
-        return this.validate(user, rule, ...args);
+        return subject.reduce((carry, subject) => {
+            if(carry) {
+                const rule = this.rules.get(subject) || this.rules.get(verb);
+        
+                if(typeof rule === 'object') {
+                    return this.validate(user, rule[verb], ...args);
+                }
+        
+                return this.validate(user, rule, ...args);
+            }
+
+            return false;
+        }, true);
     }
 
     passesBeforeCheck(user, verb, subject, ...args) {

@@ -1,7 +1,6 @@
-import Factory from './Factory';
-import { promise, commentNode } from '../../Functions';
+import { promise, commentNode, user, Guard } from '..';
 
-export const factory = new Factory;
+export const guard = new Guard;
 
 export function extract(binding) {
     let verb = binding.arg, subject = binding.value;
@@ -9,18 +8,21 @@ export function extract(binding) {
     if(!verb && Array.isArray(subject)) {
         [verb, subject] = subject;
     }
+    else if(binding.modifiers) {
+        subject = Object.keys(binding.modifiers);
+    }
 
     return { verb, subject };
 }
 
-export default function install(Vue, data, options = {}) {
+export default function install(Vue, options = {}) {
     Vue.directive('can', (el, binding, vnode) => {
         const { verb, subject } = extract(binding);
         
         const uncommment = commentNode(el, vnode);
 
-        promise(data).then(data => {
-            if(factory.can(data, verb, subject)) {
+        promise(options.user || user).then(data => {
+            if(guard.can(data, verb, subject)) {
                 uncommment();
             }
         });
@@ -31,14 +33,14 @@ export default function install(Vue, data, options = {}) {
         
         const uncommment = commentNode(el, vnode);
 
-        promise(data).then(data => {
-            if(!factory.can(data, verb, subject)) {
+        promise(options.user || user).then(data => {
+            if(!guard.can(data, verb, subject)) {
                 uncommment();
             }
         });
     });
     
     if(typeof options.install === 'function') {
-        options.install(factory, data, options);
+        options.install(guard, options);
     }
 }

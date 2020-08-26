@@ -1,16 +1,16 @@
-let Axios;
+let axios;
 
 export {
-    Axios
+    axios
 };
 
 export function headers(...args) {
-    return Object.assign(Axios.defaults.headers, ...args);
+    return Object.assign(axios.defaults.headers, ...args);
 }
 
 export function header(key, value) {
     if(typeof value === 'undefined') {
-        return Axios.defaults.headers[key];
+        return axios.defaults.headers[key];
     }
 
     return headers({
@@ -18,9 +18,13 @@ export function header(key, value) {
     });
 }
 
+export function isAuthorized() {
+    return !!header('Authorization');
+}
+
 export function authorize(key) {
-    if(key && (key.secret_key || key.public_key)) {
-        return authorize(key.secret_key || key.public_key);
+    if(key && typeof key === 'object') {
+        key = key.secret_key || key.public_key;
     }
 
     return header('Authorization', key ? `Bearer ${key}` : null);
@@ -31,18 +35,18 @@ export default function(vue, options = {}) {
         throw new Error('AxiosDefaults plugin requires options.id.');
     }
 
-    if(!options.Axios) {
-        throw new Error('AxiosDefaults plugin requires options.Axios.');
+    if(!options.axios) {
+        throw new Error('AxiosDefaults plugin requires options.axios.');
     }
 
-    Axios = vue.prototype.$http = options.Axios;
-    Axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+    axios = vue.prototype.$http = options.axios;
+    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
-    if(!Axios.defaults.baseURL) {
+    if(!axios.defaults.baseURL) {
         throw new Error('process.env.VUE_APP_BASE_URL is not defined.');
     }
 
-    Axios.interceptors.response.use(response => response, error => {
+    axios.interceptors.response.use(response => response, error => {
         if(typeof options.error === 'function') {
             options.error(vue, error);
         }

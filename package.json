@@ -15,6 +15,7 @@
     "@vue-interface/btn-activity": "^0.9.5",
     "@vue-interface/input-field": "^0.9.7",
     "@vue-interface/sizeable": "^0.9.1",
+    "@vue-interface/utils": "^0.9.15",
     "axios": "^0.19.2",
     "dayjs": "^1.8.32",
     "vuex-persistent-plugin": "^0.4.5"

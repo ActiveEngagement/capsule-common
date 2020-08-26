@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { authenticate } from '../Auth';
+import { authenticate, user } from '../Auth';
 import BtnActivity from '@vue-interface/btn-activity';
 import InputField from '@vue-interface/input-field';
 import Sizeable from '@vue-interface/sizeable';
@@ -73,15 +73,13 @@ export default {
             this.activity = true;
 
             authenticate(this.form)
-                .then(user => {
+                .then(data => {
                     this.$emit('authenticate', user);
                     this.redirect && this.$router.push(this.redirect);
                 }, error => {
+                    this.activity = false;
                     this.errors = error.response && error.response.data && error.response.data.errors;
                     this.$emit('error', this.errors);
-                })
-                .finally(() => {
-                    this.activity = false;
                 });
         }
 

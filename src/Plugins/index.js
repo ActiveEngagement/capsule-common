@@ -1,7 +1,9 @@
-import Authorization from './Authorization';
+import Policies from './Policies';
 import AxiosDefaults from './AxiosDefaults';
 
+export * from './AxiosDefaults';
+
 export {
-    Authorization,
+    Policies,
     AxiosDefaults
 };

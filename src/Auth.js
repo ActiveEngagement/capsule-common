@@ -1,18 +1,18 @@
 import { isExpired } from './Functions';
-import { Axios, authorize } from './Plugins/AxiosDefaults';
+import { axios, authorize, isAuthorized } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
+import dayjs from 'dayjs';
 
 export function merge(data, ...args) {
-    return Object.assign(data || {}, {
+    return Object.assign(data || {},  ...args, {
         is: (...roles) => is(data, roles)
-    }, ...args);
+    });
 }
 
 export function is(user, roles, ...args) {
     if(!Array.isArray(roles)) {
         roles = [roles];
     }
-
     return roles.filter(subject => {
         return user && user.teams && !!user.teams.find(team => {
             return team.roles && team.roles.find(role => {
@@ -24,14 +24,14 @@ export function is(user, roles, ...args) {
     }).length > 0;
 }
 
-export function preflight(length = 60) {
-    return cache('user.preflight', () => {
-        return Axios.options('auth/user').then(({ data }) => data);
+export async function preflight(length = 60) {
+    return cache('user.preflight', async() => {
+        return await axios.options('auth/user').then(({ data }) => data);
     }, length);
 }
 
 export async function forgotPassword(email) {
-    const { data } = await Axios.post('auth/forgot-password', (
+    const { data } = await axios.post('auth/forgot-password', (
         typeof email === 'object' ? email : { email } 
     ));
 
@@ -39,7 +39,7 @@ export async function forgotPassword(email) {
 }
 
 export async function authenticate(email, password) {
-    const { data } = await Axios.post('auth/user', (
+    const { data } = await axios.post('auth/user', (
         typeof email === 'object' ? email : {
             email: email,
             password: password
@@ -69,24 +69,24 @@ export async function user() {
     if(doc) {
         const { $cachedAt, data } = doc;
 
-        authorize(data);
-
-        const { client, updated_at } = await preflight();
-
-        if(isExpired($cachedAt, updated_at)) {
-            purge('user');
-            
-            return await user();
+        // Authorize from the stored doc.
+        if(!isAuthorized()) {
+            authorize(data);
         }
 
-        return merge(data, client && {
-            client
-        });
+        // Fetch the latest user with a preflight request.
+        const { updated_at } = await preflight();
+
+        // If the user has not been updated since the authentication,
+        // then proceed and resolve the promise.
+        if(!isExpired($cachedAt, updated_at)) {
+            return merge(data);
+        }
+
+        // If we are still here, then purge the user
+        await purge('user');
     }
 
-    return await cache('user', async() => {
-        const { data } = await Axios.get('auth/user');
-
-        return merge(authorize(data));
-    });
+    // Throw a session expired error.
+    throw new Error('Session has expired!');
 }
