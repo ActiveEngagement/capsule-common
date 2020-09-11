@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+// import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
+// dayjs.extend(timezone);
 
 export default function isExpired(cachedAt, updatedAt) {
-    return dayjs.tz(updatedAt, 'America/New_York').local().isAfter(cachedAt);
+    return dayjs(updatedAt).local().isAfter(dayjs(cachedAt).local());
 }

@@ -21,6 +21,10 @@ export default {
             type: Array,
             default: () => []
         },
+        promises: {
+            type: Array,
+            default: () => []
+        },
         vue: Function
     },
 
@@ -45,7 +49,8 @@ export default {
             return Promise.all([
                 this.initializePlugins(),
                 this.initializeDirectives(),
-                this.initializeFilters()
+                this.initializeFilters(),
+                this.initializePromises()
             ]).finally(() => {
                 this.initialized = true;
                 this.$root.$emit('initialized');
@@ -74,6 +79,10 @@ export default {
                     this.vue.filter(key, filter);
                 });
             });
+        },
+
+        initializePromises() {
+            return Promise.all(this.promises);
         }      
     },
 

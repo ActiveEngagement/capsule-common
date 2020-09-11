@@ -21,7 +21,11 @@
             label="Password"
             placeholder="Password"
             custom />
-        <btn-activity indicator="spinner" :activity="activity" :size="size" block>
+        <btn-activity
+            indicator="spinner"
+            :activity="activity"
+            :size="size"
+            block>
             Login
         </btn-activity>
         <slot />
@@ -74,7 +78,7 @@ export default {
 
             authenticate(this.form)
                 .then(data => {
-                    this.$emit('authenticate', user);
+                    this.$emit('authenticate', data);
                     this.redirect && this.$router.push(this.redirect);
                 }, error => {
                     this.activity = false;
