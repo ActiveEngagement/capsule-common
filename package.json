@@ -1,6 +1,6 @@
 {
   "name": "capsule-common",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "./src/index.js",
   "scripts": {
     "commit": "git add -A && git commit -m 'Pre-release commit';",
