@@ -45,8 +45,6 @@ export async function authenticate(email, password) {
         })
     );
 
-    console.log(data);
-
     await cache('user', data);
 
     authorize(data);
