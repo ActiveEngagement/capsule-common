@@ -2,6 +2,8 @@ import { isExpired } from './Functions';
 import { axios, authorize, isAuthorized } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
+import dayjs from 'dayjs';
+
 export function merge(data, ...args) {
     return Object.assign(data || {},  ...args, {
         is: (...roles) => is(data, roles)
@@ -83,7 +85,7 @@ export async function user() {
         }
 
         // If we are still here, then purge the user
-        await purge('user');
+        // await purge('user');
     }
 
     // Throw a session expired error.
