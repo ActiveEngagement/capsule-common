@@ -2,7 +2,6 @@ import { isExpired } from './Functions';
 import { axios, authorize, isAuthorized } from './Plugins/AxiosDefaults';
 import { purge, cache, get, config } from 'vuex-persistent-plugin';
 
-import dayjs from 'dayjs';
 
 export function merge(data, ...args) {
     return Object.assign(data || {},  ...args, {
@@ -47,6 +46,7 @@ export async function authenticate(email, password) {
         })
     );
 
+    await purge('user');
     await cache('user', data);
 
     authorize(data);

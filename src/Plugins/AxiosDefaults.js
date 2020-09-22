@@ -40,7 +40,7 @@ export default function(vue, options = {}) {
     }
 
     axios = vue.prototype.$http = options.axios;
-    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+    axios.defaults.baseURL = options.baseURL || process.env.VUE_APP_BASE_URL;
 
     if(!axios.defaults.baseURL) {
         throw new Error('process.env.VUE_APP_BASE_URL is not defined.');
