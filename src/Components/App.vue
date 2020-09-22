@@ -13,10 +13,6 @@ export default {
             type: Object,
             default: () => {}
         },
-        indicators: {
-            type: Object,
-            default: () => {}
-        },
         plugins: {
             type: Array,
             default: () => []
@@ -25,27 +21,26 @@ export default {
             type: Array,
             default: () => []
         },
+        render: {
+            type: Function,
+            default(h) {
+                return h('div', 'test');      
+            }
+        },
         vue: Function
     },
 
     data: () => ({
-        initialized: false,
-        showActivity: false
+        initialized: false
     }),
 
     mounted() {
         this.initialize();
     },
 
-    created() {
-        this.$root.$on('activity', value => this.showActivity = value);
-    },
-
     methods: {
 
         initialize() {
-            this.initialized = false;
-
             return Promise.all([
                 this.initializePlugins(),
                 this.initializeDirectives(),
@@ -86,12 +81,8 @@ export default {
         }      
     },
 
-    render(h) {
-        if(!this.$slots.default || !this.initialized || this.showActivity) {
-            return this.$scopedSlots.indicator;
-        }
-
-        return this.$slots.default[0];
+    render(...args) {
+        return this.render(...args);
     }
 };
 </script>
