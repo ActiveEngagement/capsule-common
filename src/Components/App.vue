@@ -21,12 +21,7 @@ export default {
             type: Array,
             default: () => []
         },
-        render: {
-            type: Function,
-            default(h) {
-                return h('div', 'test');      
-            }
-        },
+        render: Function,
         vue: Function
     },
 

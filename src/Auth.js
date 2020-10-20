@@ -24,7 +24,7 @@ export function is(user, roles, ...args) {
     }).length > 0;
 }
 
-export async function preflight(length = 60) {
+export async function preflight(length = 0) {
     return cache('user.preflight', async() => {
         return await axios.options('auth/user').then(({ data }) => data);
     }, length);
@@ -69,6 +69,9 @@ export async function user() {
 
     if(doc) {
         const { $cachedAt, data } = doc;
+        
+        // Merge the saved data.
+        merge(data);
 
         // Authorize from the stored doc.
         if(!isAuthorized()) {
@@ -76,16 +79,15 @@ export async function user() {
         }
 
         // Fetch the latest user with a preflight request.
-        const { updated_at } = await preflight();
+        const user = await preflight();
 
         // If the user has not been updated since the authentication,
         // then proceed and resolve the promise.
-        if(!isExpired($cachedAt, updated_at)) {
-            return merge(data);
+        if(isExpired($cachedAt, user.updated_at)) {
+            await config('set', merge(user));
         }
 
-        // If we are still here, then purge the user
-        // await purge('user');
+        return user;
     }
 
     // Throw a session expired error.
