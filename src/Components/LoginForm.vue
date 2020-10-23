@@ -88,7 +88,7 @@ export default {
                     this.$emit('authenticate', data);
                     
                     if(typeof this.redirect === 'function') {
-                        this.redirect();
+                        this.redirect(this);
                     }
                     else {
                         this.redirect && this.$router.push(this.redirect);
