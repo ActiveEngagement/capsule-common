@@ -79,7 +79,13 @@ export default {
             authenticate(this.form)
                 .then(data => {
                     this.$emit('authenticate', data);
-                    this.redirect && this.$router.push(this.redirect);
+                    
+                    if(typeof this.redirect === 'function') {
+                        this.redirect();
+                    }
+                    else {
+                        this.redirect && this.$router.push(this.redirect);
+                    }
                 }, error => {
                     this.activity = false;
                     this.errors = error.response && error.response.data && error.response.data.errors;
