@@ -53,10 +53,14 @@ export default {
 
     props: {
 
+        email: String,
+
         size: {
             type: String,
             default: 'lg'
         },
+
+        password: String,
 
         redirect: [Function, Object, String]
 
@@ -65,7 +69,10 @@ export default {
     data() {
         return {
             test: 'test',
-            form: {},
+            form: {
+                email: this.email,
+                password: this.password
+            },
             errors: {},
             activity: false
         };
