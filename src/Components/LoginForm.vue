@@ -58,7 +58,7 @@ export default {
             default: 'lg'
         },
 
-        redirect: [Object, String]
+        redirect: [Function, Object, String]
 
     },
 
