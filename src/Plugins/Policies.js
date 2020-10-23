@@ -20,7 +20,7 @@ export default function install(Vue, options = {}) {
         throw new Error('You must define options.user()');
     }
 
-    Vue.directive('can', async (el, binding, vnode) => {
+    Vue.directive('can', (el, binding, vnode) => {
         const { verb, subject } = extract(binding);
         
         const uncommment = commentNode(el, vnode);
