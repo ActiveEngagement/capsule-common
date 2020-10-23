@@ -22,14 +22,6 @@ export default class Guard {
         this.$rules = new Map(values);
     }
 
-    get policies() {
-        return this.$policies;
-    }
-
-    set policies(values) {
-        this.$policies = new Map(values);
-    }
-
     alias(key, value) {
         this.aliases.set(key, value);
     }
