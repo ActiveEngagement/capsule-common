@@ -9,7 +9,7 @@ export function merge(data, ...args) {
     });
 }
 
-export function is(user, roles, ...args) {
+export function is(user, roles) {
     if(!Array.isArray(roles)) {
         roles = [roles];
     }
