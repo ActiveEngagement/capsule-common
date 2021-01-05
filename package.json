@@ -16,7 +16,7 @@
     "@vue-interface/input-field": "^0.9.18",
     "@vue-interface/sizeable": "^0.9.1",
     "@vue-interface/utils": "^0.9.23",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "dayjs": "^1.8.36",
     "vuex-persistent-plugin": "^0.4.5"
   },
