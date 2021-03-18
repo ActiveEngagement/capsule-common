@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { authenticate, user } from '../Auth';
+import { authenticate } from '../Auth';
 import BtnActivity from '@vue-interface/btn-activity';
 import InputField from '@vue-interface/input-field';
 import Sizeable from '@vue-interface/sizeable';
