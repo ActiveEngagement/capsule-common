@@ -68,7 +68,6 @@ export default {
 
     data() {
         return {
-            test: 'test',
             form: {
                 email: this.email,
                 password: this.password

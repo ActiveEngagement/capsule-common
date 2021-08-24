@@ -13,6 +13,7 @@ export function is(user, roles) {
     if(!Array.isArray(roles)) {
         roles = [roles];
     }
+    
     return roles.filter(subject => {
         return user && user.teams && !!user.teams.find(team => {
             return team.roles && team.roles.find(role => {
@@ -38,7 +39,21 @@ export async function forgotPassword(email) {
     return data;
 }
 
-export async function authenticate(email, password) {
+export async function redirect(redirect_uri) {
+    if(typeof redirect_uri === 'function') {
+        redirect_uri = redirect_uri();
+    }
+
+    const { data } = await axios.get('saml2/redirect', {
+        params: {
+            redirect_uri
+        }
+    });
+
+    return data;
+}
+
+export async function authenticate(email) {
     const { data } = await axios.post('auth/user', (
         typeof email === 'object' ? email : {
             email: email,
@@ -75,7 +90,7 @@ export async function user() {
 
         // Authorize from the stored doc.
         if(!isAuthorized()) {
-            authorize(data);
+            authorize(await cache('user.token'));
         }
 
         // Fetch the latest user with a preflight request.

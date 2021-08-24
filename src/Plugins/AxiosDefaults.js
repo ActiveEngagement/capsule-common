@@ -5,7 +5,7 @@ export {
 };
 
 export function headers(...args) {
-    return Object.assign(axios.defaults.headers, ...args);
+    return Object.assign((axios.defaults ? axios.defaults.headers : {}), ...args);
 }
 
 export function header(key, value) {
@@ -23,10 +23,6 @@ export function isAuthorized() {
 }
 
 export function authorize(key) {
-    if(key && typeof key === 'object') {
-        key = key.secret_key || key.public_key;
-    }
-
     return header('Authorization', key ? `Bearer ${key}` : null);
 }
 

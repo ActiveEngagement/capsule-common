@@ -12,6 +12,10 @@
     "release": "npm run commit; npm publish; git push --follow-tags;"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@vue-interface/alert": "^1.0.26",
     "@vue-interface/btn-activity": "^0.9.5",
     "@vue-interface/input-field": "^0.11.0",
     "@vue-interface/sizeable": "^0.9.1",

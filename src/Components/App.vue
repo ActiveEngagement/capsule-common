@@ -1,6 +1,5 @@
 <script>
-import { plugins, user, modules, promise } from '..';
-import { sequence } from '@vue-interface/utils';
+import { plugins, modules } from '..';
 
 export default {
 
