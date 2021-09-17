@@ -6,19 +6,19 @@ export default {
     props: {
         directives: {
             type: Object,
-            default: () => {}
+            default: () => ({})
         },
         filters: {
             type: Object,
-            default: () => {}
+            default: () => ({})
         },
         plugins: {
             type: Array,
-            default: () => []
+            default: () => ([])
         },
         promises: {
             type: Array,
-            default: () => []
+            default: () => ([])
         },
         render: Function,
         vue: Function
@@ -63,7 +63,7 @@ export default {
         },
 
         initializeFilters() {
-            return Promise.all(modules(this.filters)).then(modules => {
+            return Promise.all(modules(this.filters || [])).then(modules => {
                 modules.forEach(([key, filter]) => {
                     this.vue.filter(key, filter);
                 });
@@ -71,7 +71,7 @@ export default {
         },
 
         initializePromises() {
-            return Promise.all(this.promises);
+            return Promise.all(this.promises || []);
         }      
     },
 
