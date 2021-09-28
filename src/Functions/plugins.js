@@ -10,6 +10,8 @@ export default function plugins(arr) {
     });
     
     return Promise.all(promises).then(modules => {
-        return modules.map((module, i) => [module.default, args[i]]);
+        return modules.map((module, i) => {
+            return [module.default || module, args[i]]
+        });
     });
 }
