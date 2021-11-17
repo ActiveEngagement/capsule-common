@@ -1,6 +1,6 @@
 import { isExpired } from './Functions';
 import { axios, authorize, isAuthorized } from './Plugins/AxiosDefaults';
-import { purge, cache, get, config } from 'vuex-persistent-plugin';
+import { cache, config, removeConfig } from 'vuex-persistent-plugin';
 
 
 export function merge(data, ...args) {
@@ -61,8 +61,7 @@ export async function authenticate(email) {
         })
     );
 
-    await purge('user');
-    await cache('user', data);
+    await config('user', data);
 
     authorize(data);
 
@@ -74,13 +73,13 @@ export async function logout() {
 
     authorize(null);
 
-    await purge('user');
+    await removeConfig('user');
 
     return user;
 }
 
 export async function user() {
-    const doc = await get('user').catch(e => undefined);
+    const doc = await config('user');
 
     if(doc) {
         const { $cachedAt, data } = doc;
@@ -90,7 +89,7 @@ export async function user() {
 
         // Authorize from the stored doc.
         if(!isAuthorized()) {
-            authorize(await cache('user.token'));
+            authorize(await config('user.token'));
         }
 
         // Fetch the latest user with a preflight request.
