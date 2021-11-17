@@ -1,5 +1,5 @@
 <script>
-import { plugins, modules } from '..';
+import { plugins, modules, promise } from '..';
 
 export default {
 
@@ -12,6 +12,10 @@ export default {
             type: Object,
             default: () => ({})
         },
+        initialize: {
+            type: Function,
+            default: async() => {}
+        },
         plugins: {
             type: Array,
             default: () => ([])
@@ -21,35 +25,39 @@ export default {
             default: () => ([])
         },
         render: Function,
-        vue: Function
+        Vue: Function
     },
 
     data: () => ({
         initialized: false
     }),
 
-    mounted() {
-        this.initialize();
+    async mounted() {
+        await this.initializer();
     },
 
     methods: {
 
-        initialize() {
-            return Promise.all([
-                this.initializePlugins(),
-                this.initializeDirectives(),
-                this.initializeFilters(),
-                this.initializePromises()
-            ]).finally(() => {
-                this.initialized = true;
-                this.$root.$emit('initialized');
-            });
+        async initializer() {
+            await this.initialize();
+
+            for(let initializer of [
+                this.initializePromises,
+                this.initializePlugins,
+                this.initializeDirectives,
+                this.initializeFilters,
+            ]) {
+                await initializer();
+            }
+
+            this.initialized = true;
+            this.$root.$emit('initialized');
         },
 
         initializePlugins() {
             return plugins(this.plugins).then(plugins => {
                 plugins.forEach(([ plugin, options ]) => {
-                    this.vue.use(plugin, options);
+                    this.Vue.use(plugin, options);
                 });
             });
         },
@@ -57,7 +65,7 @@ export default {
         initializeDirectives() {
             return Promise.all(modules(this.directives)).then(modules => {
                 modules.forEach(([key, directive]) => {
-                    this.vue.directive(key, directive);
+                    this.Vue.directive(key, directive);
                 });
             });
         },
@@ -65,13 +73,15 @@ export default {
         initializeFilters() {
             return Promise.all(modules(this.filters || [])).then(modules => {
                 modules.forEach(([key, filter]) => {
-                    this.vue.filter(key, filter);
+                    this.Vue.filter(key, filter);
                 });
             });
         },
 
         initializePromises() {
-            return Promise.all(this.promises || []);
+            return Promise.all((this.promises || []).map(value => {
+                return promise(value);
+            }));
         }      
     },
 
