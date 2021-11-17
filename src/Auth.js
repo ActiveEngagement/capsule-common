@@ -25,7 +25,7 @@ export function is(user, roles) {
     }).length > 0;
 }
 
-export async function preflight(length = 0) {
+export async function preflight(length = 300) {
     return cache('user.preflight', async() => {
         return await axios.options('auth/user').then(({ data }) => data);
     }, length);
