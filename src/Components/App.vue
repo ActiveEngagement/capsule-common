@@ -13,7 +13,7 @@ export default {
             default: () => ({})
         },
         initialize: {
-            type: Function,
+            type: [Array, Function, Promise],
             default: async() => {}
         },
         plugins: {
@@ -29,23 +29,29 @@ export default {
     },
 
     data: () => ({
-        initialized: false
+        // This property indicaters if the initializers have been ran.
+        initialized: false,
     }),
 
     async mounted() {
-        await this.initializer();
+        await this.runInitializers();
     },
 
     methods: {
 
-        async initializer() {
-            await this.initialize();
+        async runInitializers() {
+            // Convert the initialize property to an array.
+            for(let initializer of [].concat(this.initialize)) {
+                // Await the promise
+                await promise(initializer);
+            }
 
+            // Loop through all the initializer props.
             for(let initializer of [
-                this.initializePromises,
                 this.initializePlugins,
                 this.initializeDirectives,
                 this.initializeFilters,
+                this.initializePromises,
             ]) {
                 await initializer();
             }
