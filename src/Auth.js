@@ -80,14 +80,11 @@ export async function logout() {
 
 export async function user() {
     const doc = await config('user');
-
+    
     if(doc) {
-        const { $cachedAt, data } = doc;
-        
-        // Merge the saved data.
-        merge(data);
+        const { $cachedAt } = doc;
 
-        // Authorize from the stored doc.
+        // Authorize from stored token.
         if(!isAuthorized()) {
             authorize(await config('user.token'));
         }
@@ -98,10 +95,10 @@ export async function user() {
         // If the user has not been updated since the authentication,
         // then proceed and resolve the promise.
         if(isExpired($cachedAt, user.updated_at)) {
-            await config('set', merge(user));
+            await config('set', user);
         }
 
-        return user;
+        return merge(user);
     }
 
     // Throw a session expired error.

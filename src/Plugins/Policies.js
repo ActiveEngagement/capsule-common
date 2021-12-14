@@ -1,4 +1,4 @@
-import { promise, commentNode, user, Guard } from '..';
+import { commentNode, Guard } from '..';
 
 export const guard = new Guard;
 
